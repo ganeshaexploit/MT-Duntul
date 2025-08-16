@@ -1,0 +1,113 @@
+-- ⚡ Brutal Auto Summit by Ganesha Exploit
+-- Teleport spam 2x per checkpoint + delay 0.1 detik + auto reset terakhir
+-- UI Modern tombol ON/OFF (tetap ada walau reset)
+-- Dengan notifikasi bawaan Roblox (awal & checkpoint terakhir)
+
+local Players = game:GetService("Players")
+local StarterGui = game:GetService("StarterGui")
+local CoreGui = game:GetService("CoreGui")
+local player = Players.LocalPlayer
+
+-- Daftar koordinat target
+local COORDS = {
+    Vector3.new(971.34, 61.15, 954.53),
+    Vector3.new(868.00, 209.15, 132.77),
+    Vector3.new(780.14, 341.13, 0.33),
+    Vector3.new(411.23, 429.15, -39.85),
+    Vector3.new(255.82, 613.15, -278.07),
+    Vector3.new(269.97, 652.94, -455.76),
+    Vector3.new(31.17, 689.15, -458.94),
+    Vector3.new(-250.11, 685.15, -449.02),
+    Vector3.new(-551.55, 725.15, -383.01),
+    Vector3.new(-559.30, 785.15, -587.97),
+    Vector3.new(-474.39, 904.85, -763.30),
+    Vector3.new(-74.82, 893.15, -766.53),
+    Vector3.new(338.65, 1069.15, -931.76),
+    Vector3.new(434.63, 1285.15, -806.75),
+    Vector3.new(671.65, 1665.15, -850.89),
+    Vector3.new(631.40, 1877.15, -742.94),
+    Vector3.new(959.69, 1881.12, -866.25),
+    Vector3.new(977.11, 1945.61, -533.70),
+}
+
+-- Fungsi notifikasi
+local function Notify(msg)
+    StarterGui:SetCore("SendNotification", {
+        Title = "⚡ Auto Summit",
+        Text = msg,
+        Duration = 5
+    })
+end
+
+-- Notifikasi awal
+Notify("By Ganesha Exploit")
+
+-- Fungsi teleport brutal
+local function BrutalTP(hrp, pos)
+    for i = 1, 2 do
+        hrp.CFrame = CFrame.new(pos + Vector3.new(0, 3, 0))
+        task.wait(0.001)
+    end
+end
+
+-- Variabel kontrol
+local running = false
+
+-- Buat UI Modern (taruh di CoreGui biar tidak hilang saat reset)
+local ScreenGui = Instance.new("ScreenGui")
+ScreenGui.Name = "BrutalTeleportUI"
+ScreenGui.ResetOnSpawn = false
+ScreenGui.Parent = CoreGui
+
+local ToggleButton = Instance.new("TextButton", ScreenGui)
+ToggleButton.Size = UDim2.new(0, 180, 0, 50)
+ToggleButton.Position = UDim2.new(0.05, 0, 0.2, 0)
+ToggleButton.BackgroundColor3 = Color3.fromRGB(25, 25, 25)
+ToggleButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+ToggleButton.Font = Enum.Font.SourceSansBold
+ToggleButton.TextSize = 20
+ToggleButton.Text = "⚡ Start Teleport"
+ToggleButton.BorderSizePixel = 0
+ToggleButton.BackgroundTransparency = 0.1
+ToggleButton.Active = true
+ToggleButton.Draggable = true
+
+-- Fungsi utama teleport loop
+local function TeleportLoop()
+    while running do
+        local char = player.Character or player.CharacterAdded:Wait()
+        local hrp = char:WaitForChild("HumanoidRootPart")
+
+        for i, point in ipairs(COORDS) do
+            if not running then break end
+            BrutalTP(hrp, point)
+            task.wait(0.1) -- ✅ delay FIX 0.1 detik
+
+            -- Kalau sudah sampai checkpoint terakhir → notifikasi
+            if i == #COORDS then
+                Notify("By Ganesha Exploit")
+            end
+        end
+
+        if running then
+            task.wait(1)
+            player.Character:BreakJoints() -- reset
+            char = player.CharacterAdded:Wait()
+            char:WaitForChild("HumanoidRootPart")
+            task.wait(1)
+        end
+    end
+    ToggleButton.Text = "⚡ Start Teleport"
+end
+
+-- Event tombol
+ToggleButton.MouseButton1Click:Connect(function()
+    if running then
+        running = false
+        ToggleButton.Text = "⚡ Start Teleport"
+    else
+        running = true
+        ToggleButton.Text = "❌ Stop Teleport"
+        task.spawn(TeleportLoop)
+    end
+end)
