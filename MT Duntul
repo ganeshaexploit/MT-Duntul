@@ -1,5 +1,5 @@
 -- ⚡ Brutal Auto Summit by Ganesha Exploit
--- Teleport spam 2x per checkpoint + delay 0.1 detik + auto reset terakhir
+-- Teleport spam 2x per checkpoint + delay 0.3 detik + auto reset terakhir
 -- UI Modern tombol ON/OFF (tetap ada walau reset)
 -- Dengan notifikasi bawaan Roblox (awal & checkpoint terakhir)
 
@@ -81,7 +81,7 @@ local function TeleportLoop()
         for i, point in ipairs(COORDS) do
             if not running then break end
             BrutalTP(hrp, point)
-            task.wait(0.1) -- ✅ delay FIX 0.1 detik
+            task.wait(0.3) -- ✅ delay FIX 0.3 detik
 
             -- Kalau sudah sampai checkpoint terakhir → notifikasi
             if i == #COORDS then
