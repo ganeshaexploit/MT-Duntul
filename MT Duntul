@@ -1,5 +1,5 @@
 -- ⚡ Brutal Auto Summit by Ganesha Exploit
--- Teleport spam 2x per checkpoint + delay 0.3 detik + auto reset terakhir
+-- Teleport CFrame tanpa mantul + delay 0.3 detik + auto reset terakhir
 -- UI Modern tombol ON/OFF (tetap ada walau reset)
 -- Dengan notifikasi bawaan Roblox (awal & checkpoint terakhir)
 
@@ -42,12 +42,9 @@ end
 -- Notifikasi awal
 Notify("By Ganesha Exploit")
 
--- Fungsi teleport brutal
+-- Fungsi teleport tanpa mantul
 local function BrutalTP(hrp, pos)
-    for i = 1, 2 do
-        hrp.CFrame = CFrame.new(pos + Vector3.new(0, 3, 0))
-        task.wait(0.001)
-    end
+    hrp.CFrame = CFrame.new(pos + Vector3.new(0, 3, 0))
 end
 
 -- Variabel kontrol
@@ -81,7 +78,7 @@ local function TeleportLoop()
         for i, point in ipairs(COORDS) do
             if not running then break end
             BrutalTP(hrp, point)
-            task.wait(0.3) -- ✅ delay FIX 0.3 detik
+            task.wait(0.3) -- ✅ delay 0.3 detik tiap checkpoint
 
             -- Kalau sudah sampai checkpoint terakhir → notifikasi
             if i == #COORDS then
